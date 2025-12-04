@@ -20,6 +20,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.smart_fitness.Members.Member;
 import com.example.smart_fitness.Members.MembershipPlan;
+import com.example.smart_fitness.Records_DTO.WorkoutSessionMapper;
+import com.example.smart_fitness.Records_DTO.WorkoutSessionMiniDTO;
 import com.example.smart_fitness.ServiceLayer.ServiceInterface;
 import com.example.smart_fitness.Trainers.CardioTrainer;
 import com.example.smart_fitness.Trainers.StrengthTrainer;
@@ -77,13 +79,17 @@ public class JpaController {
   // CREATE WORKOUT SESSION
   // ===========================
   @PostMapping("/register/session")
-  public WorkoutSession registerSession(@Valid @RequestBody SessionRecord record) {
-    return service.createWorkoutSession(
+  public WorkoutSessionMiniDTO registerSession(@Valid @RequestBody SessionRecord record) {
+    WorkoutSession session = service.createWorkoutSession(
         record.memberId(),
         record.trainerId(),
         record.date(),
         record.duration(),
         record.caloriesBurn());
+    // WorkoutSessionMapper WorkoutSessionMapper = new WorkoutSessionMapper(); -> if
+    // non static
+    return WorkoutSessionMapper.toMiniDTO(session);
+
   }
 
   // ===========================
